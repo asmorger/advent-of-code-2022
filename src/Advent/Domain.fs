@@ -14,6 +14,12 @@ module Elf =
     elves
     |> Seq.sortByDescending(fun x -> x.TotalLoad)
     |> Seq.head
+    
+  let findInventoryForTopN (elves: Elf seq) (count: int) =
+    elves
+    |> Seq.sortByDescending(fun x -> x.TotalLoad)
+    |> Seq.take count
+    |> Seq.sumBy(fun x -> x.TotalLoad)
 
 type Inventory = list<Food> list
 module Inventory =
