@@ -7,7 +7,7 @@ let input = File.ReadAllText path |> Inventory
 
 let party = Party.parse input
 let largestLoad = party.mostSnacks()
-printf $"The largest calorie carrying Elf is %i{largestLoad.Snacks.TotalCaloricValue}"
+printfn $"The largest calorie carrying Elf is %i{largestLoad.Snacks.TotalCaloricValue}"
 
 let largestThreeLoads = party.maxSnacksAcrossMultipleElves()
-printf $"The largest calorie count for 3 elves is %i{largestThreeLoads}"
+printfn $"The largest calorie count for 3 elves is %i{largestThreeLoads}"
