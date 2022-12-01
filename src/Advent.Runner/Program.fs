@@ -3,11 +3,11 @@ open System.IO
 open Advent.Domain
 
 let path = Directory.GetCurrentDirectory() + "/Day01-Source.txt"
-let input = File.ReadAllText path
+let input = File.ReadAllText path |> Inventory
 
-let elves = Inventory.parse input
-let largestLoad = Elf.findLargestInventory elves
-printf $"The largest calorie carrying Elf is %i{largestLoad.TotalLoad}"
+let party = Party.parse input
+let largestLoad = party.mostSnacks()
+printf $"The largest calorie carrying Elf is %i{largestLoad.Snacks.TotalCaloricValue}"
 
-let largestThreeLoads = Elf.findInventoryForTopN elves 3
+let largestThreeLoads = party.maxSnacksAcrossMultipleElves()
 printf $"The largest calorie count for 3 elves is %i{largestThreeLoads}"
