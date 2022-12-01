@@ -20,21 +20,22 @@ let sample = """
 10000
 """
 
+let inventory = Inventory sample
+let party = Party.parse inventory
+
 [<Fact>]
 let ``Inventory parsing identifies elves`` () =
-  let elves = Inventory.parse sample |> Seq.toList
-  Assert.Equal(5, elves.Length)
+  let elves = party 
+  Assert.Equal(5, elves.Members.Length)
   
 
 [<Fact>]
 let ``Elves can find the elf with the greatest load`` () =
-  let elves = Inventory.parse sample
-  let elf = Elf.findLargestInventory elves
-  Assert.Equal(24000, elf.TotalLoad)
+  let elf = party.mostSnacks()
+  Assert.Equal(24000, elf.Snacks.TotalCaloricValue)
   
 [<Fact>]
 let ``Elves can find greatest load of any 3 elves`` () =
-  let elves = Inventory.parse sample
-  let totalLoad = Elf.findInventoryForTopN elves 3
+  let totalLoad = party.maxSnacksAcrossMultipleElves()
   Assert.Equal(45000, totalLoad)
   

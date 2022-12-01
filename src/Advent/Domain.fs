@@ -2,38 +2,54 @@ module Advent.Domain
 
 open System
 
-type Food = Food of int
+type Snack =
+  | Snack of int
+  member x.Value =
+    let (Snack value) = x in value
 
-type Elf = {
-  Load: Food list
-  TotalLoad: int
+type Snacks = {
+  Items: Snack list
+  TotalCaloricValue: int
 }
 
-module Elf =
-  let findLargestInventory (elves: Elf seq) =
-    elves
-    |> Seq.sortByDescending(fun x -> x.TotalLoad)
-    |> Seq.head
-    
-  let findInventoryForTopN (elves: Elf seq) (count: int) =
-    elves
-    |> Seq.sortByDescending(fun x -> x.TotalLoad)
-    |> Seq.take count
-    |> Seq.sumBy(fun x -> x.TotalLoad)
+type Elf = {
+  Snacks: Snacks
+}
+type Inventory =
+  | Inventory of string
+  member x.readByElf =
+    let (Inventory value) = x in value.Split("\n\n");
 
-type Inventory = list<Food> list
-module Inventory =
-  let parse (input: string) =
-    let byElf = input.Split("\n\n")
+type Party =
+  {
+    Members: Elf list
+  }
+  member x.mostSnacks() =
+    x.Members
+    |> Seq.sortByDescending(fun x -> x.Snacks.TotalCaloricValue)
+    |> Seq.head
+  
+  member x.maxSnacksAcrossMultipleElves() =
+    x.Members
+    |> Seq.sortByDescending(fun x -> x.Snacks.TotalCaloricValue)
+    |> Seq.take 3
+    |> Seq.sumBy(fun x -> x.Snacks.TotalCaloricValue) 
     
-    seq {
-      for elf in byElf do
-        let load = elf.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries ||| StringSplitOptions.TrimEntries)
-        let caloriesByItem = load |> Seq.map(Int32.Parse)
-        let food = caloriesByItem |> Seq.map(Food)
-                   
-        yield {
-          Load = food |> Seq.toList
-          TotalLoad = caloriesByItem |> Seq.sum
-        }
-    }
+  static member private parseInventory (inventory: Inventory) =
+      seq {
+        for elf in inventory.readByElf do
+          let load = elf.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries ||| StringSplitOptions.TrimEntries)
+          let caloriesByItem = load |> Seq.map(Int32.Parse)
+          let food = caloriesByItem |> Seq.map(Snack)
+                     
+          yield {
+            Snacks = {
+              Items = food |> Seq.toList
+              TotalCaloricValue = caloriesByItem |> Seq.sum
+            }
+          }
+        }   
+  static member parse (inventory: Inventory) =
+      {
+        Members = Party.parseInventory inventory |> Seq.toList
+      }
