@@ -29,6 +29,13 @@ type PlayResult =
     | Loss -> 0
     | Tie -> 3
 
+  static member parse(input: string) =
+    match input with
+    | "X" -> Loss
+    | "Y" -> Tie
+    | "Z" -> Win
+    | _ -> failwith "unknown"
+
 type Play =
   | Rock
   | Paper
@@ -64,6 +71,18 @@ type Play =
     | "Z" -> Scissors
     | _ -> failwith "todo"
 
+  static member determinePlayBasedUponExpectedResult(set: Play * PlayResult) =
+    match set with
+    | Rock, Win -> Paper
+    | Rock, Loss -> Scissors
+    | Rock, Tie -> Rock
+    | Paper, Win -> Scissors
+    | Paper, Loss -> Rock
+    | Paper, Tie -> Paper
+    | Scissors, Win -> Rock
+    | Scissors, Loss -> Paper
+    | Scissors, Tie -> Scissors
+
 type Match =
   { Them: Play
     Me: Play }
@@ -85,18 +104,35 @@ type Match =
         yield { Them = them; Me = me }
     }
 
+  static member updatedRules(input: string seq) =
+    seq {
+      for line in input do
+        let values = line.Split(" ")
+        let them = Play.parse values[0]
+        let result = PlayResult.parse values[1]
+        let me = Play.determinePlayBasedUponExpectedResult (them, result)
+
+        yield { Them = them; Me = me }
+    }
+
 type Tournament =
   { Matches: Match list
     TotalPoints: int }
 
   static member parse(input: string seq) =
     let matches = Match.parse input
-    let total = matches |> Seq.sumBy(fun x -> x.Value)
-    
-    {
-      Matches = matches |> Seq.toList
-      TotalPoints = total
-    }
+    let total = matches |> Seq.sumBy (fun x -> x.Value)
+
+    { Matches = matches |> Seq.toList
+      TotalPoints = total }
+
+
+  static member parseUpdated(input: string seq) =
+    let matches = Match.updatedRules input
+    let total = matches |> Seq.sumBy (fun x -> x.Value)
+
+    { Matches = matches |> Seq.toList
+      TotalPoints = total }
 
 type Party =
   { Members: Elf list }

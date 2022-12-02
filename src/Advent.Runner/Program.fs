@@ -18,3 +18,7 @@ let path = Directory.GetCurrentDirectory() + "/Day02-Source.txt"
 let input = File.ReadLines path
 let tournament = Tournament.parse input
 printfn $"The total result from the Rock, Paper, Scissors tournament is %i{tournament.TotalPoints}"
+
+
+let tournament2 = Tournament.parseUpdated input
+printfn $"The updated total result from the Rock, Paper, Scissors tournament is %i{tournament2.TotalPoints}"
