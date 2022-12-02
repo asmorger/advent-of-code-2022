@@ -6,17 +6,25 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Commands\Domain.fs" />
+        <Compile Include="Commands\Day01.fs" />
+        <Compile Include="Commands\Day02.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="Day01-Source.txt">
+        <Content Include="Resources\Day01-Source.txt">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Include="Day02-Source.txt">
+        <Content Include="Resources\Day02-Source.txt">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Advent\Advent.fsproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Spectre.Console" Version="0.45.0" />
+      <PackageReference Include="Spectre.Console.Cli" Version="0.45.0" />
     </ItemGroup>
 
 </Project>
