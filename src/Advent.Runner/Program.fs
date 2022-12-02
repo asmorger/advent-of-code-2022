@@ -1,7 +1,7 @@
 ﻿// For more information see https://aka.ms/fsharp-console-apps
 open System.IO
 open Advent.Domain
-
+open Advent.RockPaperScissors
 (*
 let path = Directory.GetCurrentDirectory() + "/Day01-Source.txt"
 let input = File.ReadAllText path |> Inventory
