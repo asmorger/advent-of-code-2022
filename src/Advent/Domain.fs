@@ -21,18 +21,18 @@ type Inventory =
 type PlayResult =
   | Win
   | Loss
-  | Tie
+  | Draw
 
   member x.Value =
     match x with
     | Win -> 6
     | Loss -> 0
-    | Tie -> 3
+    | Draw -> 3
 
   static member parse(input: string) =
     match input with
     | "X" -> Loss
-    | "Y" -> Tie
+    | "Y" -> Draw
     | "Z" -> Win
     | _ -> failwith "unknown"
 
@@ -51,13 +51,13 @@ type Play =
     let set = (x, other)
 
     match set with
-    | Rock, Rock -> Tie
+    | Rock, Rock -> Draw
     | Rock, Paper -> Loss
     | Rock, Scissors -> Win
-    | Paper, Paper -> Tie
+    | Paper, Paper -> Draw
     | Paper, Rock -> Win
     | Paper, Scissors -> Loss
-    | Scissors, Scissors -> Tie
+    | Scissors, Scissors -> Draw
     | Scissors, Paper -> Win
     | Scissors, Rock -> Loss
 
@@ -75,13 +75,13 @@ type Play =
     match set with
     | Rock, Win -> Paper
     | Rock, Loss -> Scissors
-    | Rock, Tie -> Rock
+    | Rock, Draw -> Rock
     | Paper, Win -> Scissors
     | Paper, Loss -> Rock
-    | Paper, Tie -> Paper
+    | Paper, Draw -> Paper
     | Scissors, Win -> Rock
     | Scissors, Loss -> Paper
-    | Scissors, Tie -> Scissors
+    | Scissors, Draw -> Scissors
 
 type Match =
   { Them: Play
