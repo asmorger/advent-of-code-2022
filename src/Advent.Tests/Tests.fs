@@ -39,3 +39,18 @@ let ``Elves can find greatest load of any 3 elves`` () =
   let totalLoad = party.maxSnacksAcrossMultipleElves()
   Assert.Equal(45000, totalLoad)
   
+[<Fact>]
+let ``Rucksack priority`` () =
+  let input = [
+    "vJrwpWtwJgWrhcsFMMfFFhFp"
+    "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL";
+    "PmmdzqPrVvPwwTWBwg";
+    "wMqvLMZHhHMvwLHjbvcjnnSBnvTQFnO";
+    "ttgJtRGJQctTZtZT";
+    "CrZsJsPPZsGzwwsLwLmpwMDw"
+  ]
+  
+  let rucksacks = Rucksack.parse input
+  let priority = rucksacks |> Seq.sumBy(fun x -> x.priorityOfMispackagedItem)
+  
+  Assert.Equal(157,priority)

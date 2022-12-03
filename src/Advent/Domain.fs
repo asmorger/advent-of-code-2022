@@ -10,13 +10,44 @@ type Snack =
 type Snacks =
   { Items: Snack list
     TotalCaloricValue: int }
+  
+type Rucksack =
+  {
+    CompartmentOne: char Set
+    CompartmentTwo: char Set
+  }
+  member x.mispackagedItem =
+    let intersection =
+      Set.intersect x.CompartmentOne x.CompartmentTwo
+    
+    intersection.MaximumElement
+    
+  member x.priorityOfMispackagedItem =
+    let item = x.mispackagedItem
+    let priority =
+      if Char.IsLower item then int item - 96
+      else (int item - 64) + 26
+    priority
+  
+  static member parse (input: string seq) =
+    seq {
+      for line in input do
+        let rucksackCompartments = line |> Seq.splitInto 2 |> Seq.toList
+        
+        yield {
+          CompartmentOne = Set(rucksackCompartments.Head)
+          CompartmentTwo = Set(rucksackCompartments[1])
+        }
+    }
 
-type Elf = { Snacks: Snacks }
+type Elf = {
+  Snacks: Snacks
+}
 
 type Inventory =
   | Inventory of string
 
-  member x.readByElf = let (Inventory value) = x in value.Split("\n\n")
+  member x.readSnacksByElf = let (Inventory value) = x in value.Split("\n\n")
 
 type Party =
   { Members: Elf list }
@@ -34,7 +65,7 @@ type Party =
 
   static member private parseInventory(inventory: Inventory) =
     seq {
-      for elf in inventory.readByElf do
+      for elf in inventory.readSnacksByElf do
         let load =
           elf.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries ||| StringSplitOptions.TrimEntries)
 
