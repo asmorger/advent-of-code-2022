@@ -45,7 +45,6 @@ module Day01 =
 
 module Day03 =
 
-
   let input =
     [ "vJrwpWtwJgWrhcsFMMfFFhFp"
       "jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL"

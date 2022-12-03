@@ -1,6 +1,5 @@
 module Advent.Runner.Commands.Day02
 
-open System.IO
 open Advent.RockPaperScissors
 open Advent.Runner.Commands.Domain
 
@@ -8,9 +7,7 @@ type Day02() =
   inherit DailyCommand()
 
   let loadInput =
-    let path = Directory.GetCurrentDirectory() + "/Resources/Day02-Source.txt"
-    let input = File.ReadLines path
-    input
+    readInputAsSeq "Day02"
     
   let loadTournament =
     let tournament = Tournament.parse loadInput 

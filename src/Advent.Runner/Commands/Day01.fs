@@ -1,6 +1,5 @@
 module Advent.Runner.Commands.Day01
 
-open System.IO
 open Advent.Domain
 open Advent.Runner.Commands.Domain
 
@@ -8,8 +7,7 @@ type Day01() =
   inherit DailyCommand()
 
   let loadParty =
-    let path = Directory.GetCurrentDirectory() + "/Resources/Day01-Source.txt"
-    let input = File.ReadAllText path |> Inventory
+    let input = readInput "Day01" |> Inventory
     let party = Party.parse input
     party
 
