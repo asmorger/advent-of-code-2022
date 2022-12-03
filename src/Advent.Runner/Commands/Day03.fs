@@ -13,16 +13,13 @@ type Day03() =
     input
 
   override this.part1() =
-    let rucksacks = Rucksack.parse loadInput
-    let priority = rucksacks |> Seq.sumBy (fun x -> x.mispackagedItem.Priority)
+    let priority = Rucksack.calculatePriority loadInput
     printfn $"The total priority of misplaced items is %i{priority}"
 
     0
 
   override this.part2() =
-    let rucksacks = Rucksack.parse loadInput
-    let groups = rucksacks |> Seq.chunkBySize 3
-    let priority = groups |> Seq.map (Rucksack.group) |> Seq.sumBy(fun x -> x.Priority)
+    let priority = Rucksack.calculateGroupPriority loadInput
 
     printfn $"The group priority of misplaced items is %i{priority}"
     0

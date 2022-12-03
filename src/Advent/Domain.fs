@@ -23,31 +23,44 @@ type RucksackItem =
 
 type Rucksack =
   { CompartmentOne: char Set
-    CompartmentTwo: char Set }
+    CompartmentTwo: char Set
+    FullInventory: string}
 
   member x.mispackagedItem =
     let intersection = Set.intersect x.CompartmentOne x.CompartmentTwo
 
     RucksackItem intersection.MaximumElement
 
-  static member group(packs: Rucksack seq) =
+  static member private group(packs: Rucksack seq) =
     let inventory =
-      packs |> Seq.map (fun x -> x.CompartmentOne + x.CompartmentTwo) |> Seq.toArray
+      packs |> Seq.map (fun x ->  Set(x.FullInventory)) |> Seq.toArray
 
     let first = Set.intersect inventory[0] inventory[1]
     let second = Set.intersect first inventory[2]
 
     RucksackItem second.MaximumElement
 
-  static member parse(input: string seq) =
+  static member private parse(input: string seq) =
     seq {
       for line in input do
         let rucksackCompartments = line |> Seq.splitInto 2 |> Seq.toList
 
         yield
           { CompartmentOne = Set(rucksackCompartments.Head)
-            CompartmentTwo = Set(rucksackCompartments[1]) }
+            CompartmentTwo = Set(rucksackCompartments[1])
+            FullInventory = line }
     }
+    
+  static member calculatePriority input =
+    let rucksacks = Rucksack.parse input
+    let priority = rucksacks |> Seq.sumBy (fun x -> x.mispackagedItem.Priority)
+    priority
+    
+  static member calculateGroupPriority input =
+    let rucksacks = Rucksack.parse input
+    let groups = rucksacks |> Seq.chunkBySize 3
+    let priority = groups |> Seq.map Rucksack.group |> Seq.sumBy(fun x -> x.Priority)
+    priority
 
 type Elf = { Snacks: Snacks }
 
