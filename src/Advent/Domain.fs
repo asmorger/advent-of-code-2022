@@ -10,39 +10,58 @@ type Snack =
 type Snacks =
   { Items: Snack list
     TotalCaloricValue: int }
-  
+
 type Rucksack =
-  {
-    CompartmentOne: char Set
-    CompartmentTwo: char Set
-  }
+  { CompartmentOne: char Set
+    CompartmentTwo: char Set }
+
   member x.mispackagedItem =
-    let intersection =
-      Set.intersect x.CompartmentOne x.CompartmentTwo
-    
+    let intersection = Set.intersect x.CompartmentOne x.CompartmentTwo
+
     intersection.MaximumElement
-    
+
   member x.priorityOfMispackagedItem =
     let item = x.mispackagedItem
+
     let priority =
-      if Char.IsLower item then int item - 96
-      else (int item - 64) + 26
+      if Char.IsLower item then
+        int item - 96
+      else
+        (int item - 64) + 26
+
     priority
-  
-  static member parse (input: string seq) =
+
+  static member group(packs: Rucksack seq) =
+    let inventory =
+      packs |> Seq.map (fun x -> x.CompartmentOne + x.CompartmentTwo) |> Seq.toArray
+
+    let first = Set.intersect inventory[0] inventory[1]
+    let second = Set.intersect first inventory[2]
+
+    second.MaximumElement
+
+  static member priorityOfGroup input =
+    let item = Rucksack.group input
+
+    let priority =
+      if Char.IsLower item then
+        int item - 96
+      else
+        (int item - 64) + 26
+
+    priority
+
+  static member parse(input: string seq) =
     seq {
       for line in input do
         let rucksackCompartments = line |> Seq.splitInto 2 |> Seq.toList
-        
-        yield {
-          CompartmentOne = Set(rucksackCompartments.Head)
-          CompartmentTwo = Set(rucksackCompartments[1])
-        }
+
+        yield
+          { CompartmentOne = Set(rucksackCompartments.Head)
+            CompartmentTwo = Set(rucksackCompartments[1]) }
     }
 
-type Elf = {
-  Snacks: Snacks
-}
+type Elf = { Snacks: Snacks }
 
 type Inventory =
   | Inventory of string
