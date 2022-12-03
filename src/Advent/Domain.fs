@@ -11,6 +11,16 @@ type Snacks =
   { Items: Snack list
     TotalCaloricValue: int }
 
+type RucksackItem =
+  | RucksackItem of char
+
+  member x.Priority =
+    let (RucksackItem value) = x
+    if Char.IsLower value then
+      int value - 96
+    else
+      (int value - 64) + 26
+
 type Rucksack =
   { CompartmentOne: char Set
     CompartmentTwo: char Set }
@@ -18,18 +28,7 @@ type Rucksack =
   member x.mispackagedItem =
     let intersection = Set.intersect x.CompartmentOne x.CompartmentTwo
 
-    intersection.MaximumElement
-
-  member x.priorityOfMispackagedItem =
-    let item = x.mispackagedItem
-
-    let priority =
-      if Char.IsLower item then
-        int item - 96
-      else
-        (int item - 64) + 26
-
-    priority
+    RucksackItem intersection.MaximumElement
 
   static member group(packs: Rucksack seq) =
     let inventory =
@@ -38,18 +37,7 @@ type Rucksack =
     let first = Set.intersect inventory[0] inventory[1]
     let second = Set.intersect first inventory[2]
 
-    second.MaximumElement
-
-  static member priorityOfGroup input =
-    let item = Rucksack.group input
-
-    let priority =
-      if Char.IsLower item then
-        int item - 96
-      else
-        (int item - 64) + 26
-
-    priority
+    RucksackItem second.MaximumElement
 
   static member parse(input: string seq) =
     seq {

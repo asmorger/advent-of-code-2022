@@ -51,7 +51,7 @@ let ``Rucksack priority`` () =
       "CrZsJsPPZsGzwwsLwLmpwMDw" ]
 
   let rucksacks = Rucksack.parse input
-  let priority = rucksacks |> Seq.sumBy (fun x -> x.priorityOfMispackagedItem)
+  let priority = rucksacks |> Seq.sumBy (fun x -> x.mispackagedItem.Priority)
 
   Assert.Equal(157, priority)
 
@@ -68,7 +68,6 @@ let ``Rucksack group priority`` () =
 
   let rucksacks = Rucksack.parse input
   let groups = rucksacks |> Seq.chunkBySize 3
-  let priority = groups |> Seq.map (Rucksack.priorityOfGroup) |> Seq.sum
-
+  let priority = groups |> Seq.map (Rucksack.group) |> Seq.sumBy(fun x -> x.Priority)
 
   Assert.Equal(70, priority)
