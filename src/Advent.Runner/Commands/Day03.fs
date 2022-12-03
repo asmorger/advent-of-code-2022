@@ -16,10 +16,6 @@ type Day03() =
     let priority = Rucksack.calculatePriority loadInput
     printfn $"The total priority of misplaced items is %i{priority}"
 
-    0
-
   override this.part2() =
     let priority = Rucksack.calculateGroupPriority loadInput
-
     printfn $"The group priority of misplaced items is %i{priority}"
-    0

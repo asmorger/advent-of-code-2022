@@ -18,11 +18,8 @@ type Day01() =
 
     let largestLoad = party.mostSnacks ()
     printfn $"The largest calorie carrying Elf is %i{largestLoad.Snacks.TotalCaloricValue}"
-    0
 
   override this.part2() =
     let party = loadParty
     let largestThreeLoads = party.maxSnacksAcrossMultipleElves()
     printfn $"The largest calorie count for 3 elves is %i{largestThreeLoads}"
-
-    0

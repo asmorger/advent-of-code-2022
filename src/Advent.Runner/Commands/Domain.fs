@@ -11,8 +11,8 @@ type DailySettings() =
 type DailyCommand() =
   inherit Command<DailySettings>()
 
-  abstract member part1: unit -> int
-  abstract member part2: unit -> int
+  abstract member part1: unit -> unit
+  abstract member part2: unit -> unit
 
   override this.Execute(_, settings) =
     let prompt = SelectionPrompt<int>()
@@ -25,4 +25,7 @@ type DailyCommand() =
     | 1 ->  this.part1()
     | 2 ->  this.part2()
     | _ -> failwith "bad input"
+    |> ignore
+    
+    0
     
