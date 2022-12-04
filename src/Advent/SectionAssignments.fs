@@ -2,48 +2,55 @@ module Advent.SectionAssignments
 
 open System
 
-type Range =
-  { Beginning: int
-    End: int }
+type Assignment = int * int
 
-  member x.isEnveloped(other: Range) =
-    other.Beginning <= x.Beginning && other.End >= x.End
-
-  member x.isIntersected(y: Range) =
-    let left = seq { x.Beginning .. 1 .. x.End } |> Set
-    let right = seq { y.Beginning .. 1 .. y.End } |> Set
+let doAssignmentsEnvelop (assignments: Assignment * Assignment) =
+  let x, y = assignments
+  
+  let isEnveloped(assignments: Assignment * Assignment) =
+    let x, y = assignments
+    let x1, x2 = x
+    let y1, y2 = y
     
-    let intersection = Set.intersect left right
-    intersection.Count > 0
+    y1 <= x1 && y2 >= x2
+  
+  isEnveloped (x, y) || isEnveloped (y, x)
+  
+let doAssignmentsIntersect (assignments: Assignment * Assignment) =
+  let x, y = assignments
+  let x1, x2 = x
+  let y1, y2 = y
+  
+  let left = seq {x1 .. 1 .. x2 } |> Set
+  let right = seq {y1 .. 1 .. y2} |> Set
+  
+  let intersection = Set.intersect left right
+  intersection.Count > 0
 
 type AssignmentPair =
-  { IsFullyContained: bool
-    HasAnyOverlap: bool }
+  { IsEnveloped: bool
+    HasIntersection: bool }
 
-  static member private parseIndividual(input: string) =
-    let value = input.Split('-') |> Array.map Int32.Parse |> Array.pairwise
-    let x, y = value[0]
+  static member private parseAssignment(input: string) =
+    input.Split('-')
+    |> Array.map Int32.Parse
+    |> Array.pairwise
+    |> Array.head
+    |> Assignment
 
-    { Beginning = x; End = y }
-
-  static member private compare(input: Range * Range) =
-    let x, y = input
-    x.isEnveloped y || y.isEnveloped x
-
-
-  static member private intersect(input: Range * Range) =
-    let x, y = input
-    x.isIntersected y || y.isIntersected x
 
   static member parse(input: string) =
-    let pairs = input.Split(',')
-    let first = AssignmentPair.parseIndividual pairs[0]
-    let second = AssignmentPair.parseIndividual pairs[1]
-    let compare = AssignmentPair.compare (first, second)
-    let anyOverlap = AssignmentPair.intersect (first, second)
+    let pair =
+      input.Split(',')
+      |> Seq.map AssignmentPair.parseAssignment
+      |> Seq.pairwise
+      |> Seq.head
+    
+    let enveloped = doAssignmentsEnvelop pair
+    let intersect = doAssignmentsIntersect pair
 
-    { IsFullyContained = compare
-      HasAnyOverlap = anyOverlap }
+    { IsEnveloped = enveloped
+      HasIntersection = intersect }
 
 
 type SectionAssignment =
@@ -54,8 +61,8 @@ type SectionAssignment =
     value |> Seq.map AssignmentPair.parse
 
   member x.numberOfEnvelopments =
-    x.parse |> Seq.filter (fun x -> x.IsFullyContained) |> Seq.toList |> List.length
+    x.parse |> Seq.filter (fun x -> x.IsEnveloped) |> Seq.toList |> List.length
 
 
   member x.numberOfIntersections =
-    x.parse |> Seq.filter (fun x -> x.HasAnyOverlap) |> Seq.toList |> List.length
+    x.parse |> Seq.filter (fun x -> x.HasIntersection) |> Seq.toList |> List.length

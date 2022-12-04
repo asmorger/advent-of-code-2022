@@ -77,7 +77,7 @@ module Day04 =
 """
 
   [<Fact>]
-  let ``Section assignments that completely overlap`` () =
+  let ``Section assignments that are enveloped`` () =
     let source =
       input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
 
@@ -87,7 +87,7 @@ module Day04 =
     overlaps |> should equal 2
 
   [<Fact>]
-  let ``Section assignments that partially overlap`` () =
+  let ``Section assignments that are intersected`` () =
     let source =
       input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
 
