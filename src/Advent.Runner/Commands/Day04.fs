@@ -8,10 +8,16 @@ type Day04() =
 
   override this.part1() =
     let assignments = SectionAssignment this.readInputAsSeq
-    
-    let overlaps = assignments.numberOfOverlaps
-    printfn $"There are %i{overlaps} overlapping assignments"
-  override this.part2() = failwith "todo"
+
+    let overlaps = assignments.numberOfEnvelopments
+    printfn $"There are %i{overlaps} enveloping assignments"
+
+  override this.part2() =
+    let assignments = SectionAssignment this.readInputAsSeq
+
+    let overlaps = assignments.numberOfIntersections
+    printfn $"There are %i{overlaps} intersecting assignments"
+
   override this.input() =
     """
 67-84,66-87

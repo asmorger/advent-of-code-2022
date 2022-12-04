@@ -57,7 +57,7 @@ module Day03 =
 
   [<Fact>]
   let ``Rucksack priority`` () =
-    let priority  = Rucksack.calculatePriority input
+    let priority = Rucksack.calculatePriority input
     priority |> should equal 157
 
   [<Fact>]
@@ -77,9 +77,21 @@ module Day04 =
 """
 
   [<Fact>]
-  let rec ``Section assignments`` () =
-    let source = input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
+  let ``Section assignments that completely overlap`` () =
+    let source =
+      input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
+
     let assignments = SectionAssignment source
-    let overlaps = assignments.numberOfOverlaps
-    
+    let overlaps = assignments.numberOfEnvelopments
+
     overlaps |> should equal 2
+
+  [<Fact>]
+  let ``Section assignments that partially overlap`` () =
+    let source =
+      input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
+
+    let assignments = SectionAssignment source
+    let overlaps = assignments.numberOfIntersections
+
+    overlaps |> should equal 4
