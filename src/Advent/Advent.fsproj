@@ -8,7 +8,7 @@
     <ItemGroup>
         <Compile Include="Domain.fs" />
         <Compile Include="RockPaperScissors.fs" />
-        <Compile Include="Library.fs" />
+        <Compile Include="SectionAssignments.fs" />
     </ItemGroup>
 
 </Project>

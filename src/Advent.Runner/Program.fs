@@ -1,6 +1,7 @@
 ﻿open Advent.Runner.Commands.Day01
 open Advent.Runner.Commands.Day02
 open Advent.Runner.Commands.Day03
+open Advent.Runner.Commands.Day04
 open Advent.Runner.Commands.Domain
 open Spectre.Console.Cli
 
@@ -15,6 +16,7 @@ let main argv =
         day.AddCommand<Day01>("one") |> ignore
         day.AddCommand<Day02>("two") |> ignore
         day.AddCommand<Day03>("three") |> ignore
+        day.AddCommand<Day04>("four") |> ignore
     ))
 
   app.Run(argv)

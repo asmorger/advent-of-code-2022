@@ -1,6 +1,8 @@
 namespace Tests
 
+open System
 open Advent.Domain
+open Advent.SectionAssignments
 open Xunit
 open FsUnit.Xunit
 
@@ -62,3 +64,22 @@ module Day03 =
   let ``Rucksack calculates total group priority`` () =
     let priority = Rucksack.calculateGroupPriority input
     priority |> should equal 70
+
+module Day04 =
+  let input =
+    """
+2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8
+"""
+
+  [<Fact>]
+  let rec ``Section assignments`` () =
+    let source = input.Split(Environment.NewLine, StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
+    let assignments = SectionAssignment source
+    let overlaps = assignments.numberOfOverlaps
+    
+    overlaps |> should equal 2

@@ -69,6 +69,7 @@ type Inventory =
 
   member x.readSnacksByElf = let (Inventory value) = x in value.Split("\n\n")
 
+
 type Party =
   { Members: Elf list }
 
