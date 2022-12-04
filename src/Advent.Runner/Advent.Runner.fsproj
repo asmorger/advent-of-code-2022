@@ -11,15 +11,6 @@
         <Compile Include="Commands\Day02.fs" />
         <Compile Include="Commands\Day03.fs" />
         <Compile Include="Program.fs" />
-        <Content Include="Resources\Day01.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Resources\Day02.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Resources\Day03.txt">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
 
     <ItemGroup>

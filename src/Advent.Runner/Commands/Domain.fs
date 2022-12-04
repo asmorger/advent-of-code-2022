@@ -1,23 +1,11 @@
 module Advent.Runner.Commands.Domain
 
-open System.IO
+open System
 open Spectre.Console
 open Spectre.Console.Cli
 
-let readInput name =
-  let path = Directory.GetCurrentDirectory() + $"/Resources/%s{name}.txt"
-  let input = File.ReadAllText path
-  input
-
-
-let readInputAsSeq name =
-  let path = Directory.GetCurrentDirectory() + $"/Resources/%s{name}.txt"
-  let input = File.ReadAllLines path
-  input
-
 type DailySettings() =
   inherit CommandSettings()
-
 
 [<AbstractClass>]
 type DailyCommand() =
@@ -25,7 +13,12 @@ type DailyCommand() =
 
   abstract member part1: unit -> unit
   abstract member part2: unit -> unit
-
+  abstract member input: unit -> string
+  
+  member this.readInput = this.input()
+  member this.readInputAsSeq =
+    let source = this.input()
+    source.Split(Environment.NewLine,  StringSplitOptions.TrimEntries ||| StringSplitOptions.RemoveEmptyEntries)
 
   override this.Execute(_, settings) =
     let prompt = SelectionPrompt<int>()
