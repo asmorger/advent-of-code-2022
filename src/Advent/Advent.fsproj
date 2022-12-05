@@ -9,6 +9,12 @@
         <Compile Include="Domain.fs" />
         <Compile Include="RockPaperScissors.fs" />
         <Compile Include="SectionAssignments.fs" />
+        <Compile Include="Cargo.fs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="FParsec" Version="1.1.1" />
+      <PackageReference Include="FSharpx.Collections" Version="3.1.0" />
     </ItemGroup>
 
 </Project>
