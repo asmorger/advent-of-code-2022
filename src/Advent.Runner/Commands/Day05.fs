@@ -4,19 +4,30 @@ open Advent.Cargo
 open Advent.Runner.Commands.Domain
 open Spectre.Console
 
-type Day05 () =
+type Day05() =
   inherit DailyCommand()
 
   override this.part1() =
-    let procedure = parseProcedure(this.input())
+    let procedure = parseProcedure (this.input ())
     let result = executeProcedure procedure
-    let code =
-      result |> Array.map(fun x -> x.Value)
-    
-    let x = new string(code)
-      
+    let code = result |> Array.map (fun x -> x.Value)
+
+    let x = new string (code)
+
     AnsiConsole.WriteLine x
-  override this.part2() = failwith "todo"
+  // FJSRQCFTN
+
+  override this.part2() =
+
+    let procedure = parseProcedure (this.input ())
+    let result = executeProcedure9001 procedure
+    let code = result |> Array.map (fun x -> x.Value)
+
+    let x = new string (code)
+
+    AnsiConsole.WriteLine x
+    // CJVLJQPHS
+
   override this.input() =
     """
 [Q]         [N]             [N]    

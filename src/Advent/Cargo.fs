@@ -5,6 +5,7 @@ open FParsec
 
 type Crate =
   | Crate of char
+
   member x.Value = let (Crate value) = x in value
 
 type CrateStack =
@@ -17,10 +18,26 @@ type CrateStack =
     value |> ignore
     value |> List.last
 
+  member x.LastN n =
+    let (CrateStack value) = x in
+    let lastIndex = value.Length - 1
+    let sliceIndex = lastIndex - n
+
+    let newValues = value[sliceIndex..lastIndex]
+    CrateStack newValues
+
   member x.DropLast =
     let (CrateStack value) = x in
     value |> ignore
     let newValues = value |> List.removeAt (value.Length - 1)
+    CrateStack newValues
+
+  member x.DropLastN n =
+    let (CrateStack value) = x in
+    let lastIndex = value.Length - 1
+    let sliceIndex = lastIndex - n
+
+    let newValues = value[0..sliceIndex]
     CrateStack newValues
 
   member x.WithValue(crate: Crate) =
@@ -30,6 +47,12 @@ type CrateStack =
     let newList = [ crate ] |> List.append value
     CrateStack newList
 
+  member x.WithValues crates =
+    let mutable (CrateStack value) = x in
+    value |> ignore
+
+    let newList = crates |> List.append value
+    CrateStack newList
 
 type Instruction =
   { NumberOfItems: int
@@ -118,7 +141,22 @@ let runInstruction (stacks: CrateStack[]) (instruction: Instruction) =
     fromStack <- newFrom
     toStack <- newTo
 
-    printf "something"
+  finalStacks
+
+let runInstruction9001 (stacks: CrateStack[]) (instruction: Instruction) =
+  let mutable finalStacks = stacks
+  let mutable fromStack = finalStacks[instruction.FromStack]
+  let mutable toStack = finalStacks[instruction.ToStack]
+
+  let crates = fromStack.LastN (instruction.NumberOfItems - 1)
+  let newFrom = fromStack.DropLastN instruction.NumberOfItems
+  let newTo = toStack.WithValues crates.Value
+
+  finalStacks[instruction.FromStack] <- newFrom
+  finalStacks[instruction.ToStack] <- newTo
+
+  fromStack <- newFrom
+  toStack <- newTo
 
   finalStacks
 
@@ -126,7 +164,17 @@ let executeProcedure (procedure: CrateStack[] * Instruction[]) =
   let mutable stacks, instructions = procedure
 
   for instruction in instructions do
+
     let result = runInstruction stacks instruction
+    stacks <- result
+
+  stacks |> Array.map (fun x -> x.Last)
+
+let executeProcedure9001 (procedure: CrateStack[] * Instruction[]) =
+  let mutable stacks, instructions = procedure
+
+  for instruction in instructions do
+    let result = runInstruction9001 stacks instruction
     stacks <- result
 
   stacks |> Array.map (fun x -> x.Last)
