@@ -111,18 +111,17 @@ move 3 from 1 to 3
 move 2 from 2 to 1
 move 1 from 1 to 2
 """
-  (*
+
   [<Fact>]
   let ``Parse crate list`` () =
     let source = input.Split("\n\n")
-    
+
     let crates = parseInitialCrates source[0] |> Seq.toList
-    
+
     crates.Length |> should equal 3
-    crates.Head |> should equal (CrateStack [ Crate 'Z'; Crate 'N'  ])
-    crates[1] |> should equal (CrateStack [ Crate 'M'; Crate 'C'; Crate 'D'  ])
-    crates[2] |> should equal (CrateStack [ Crate 'P'  ])
-*)
+    crates.Head |> should equal (CrateStack [ Crate 'Z'; Crate 'N' ])
+    crates[1] |> should equal (CrateStack [ Crate 'M'; Crate 'C'; Crate 'D' ])
+    crates[2] |> should equal (CrateStack [ Crate 'P' ])
 
   [<Fact>]
   let ``Pares instruction`` () =

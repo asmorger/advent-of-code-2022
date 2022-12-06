@@ -63,7 +63,13 @@ let parseCrate (input: char array) =
   match input with
   | item when item[0] = '[' -> Some(Crate item[1])
   | _ -> None
-
+ 
+  
+let createCrate (input: string) =
+  match input with
+  | item when input.Length = 1 -> Some(Crate item[0])
+  | _ -> None
+  
 let parseInitialCrates (input: string) =
   let allRows =
     input.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries)
@@ -75,7 +81,7 @@ let parseInitialCrates (input: string) =
     rows
     |> Seq.map (fun x -> x.ToCharArray())
     |> Seq.map (Seq.chunkBySize 4)
-    |> Seq.map (Seq.toArray)
+    |> Seq.map Seq.toArray
     |> Seq.toArray
 
   let columns = crateDefinitions[0].Length - 1
@@ -84,9 +90,8 @@ let parseInitialCrates (input: string) =
     for i = 0 to columns do
       crateDefinitions
       |> Array.map (fun x -> x[i])
-      |> Array.map (parseCrate)
-      |> Array.filter Option.isSome
-      |> Array.map Option.get
+      |> Array.map parseCrate
+      |> Array.choose id
       |> Array.rev
       |> Array.toList
       |> CrateStack
