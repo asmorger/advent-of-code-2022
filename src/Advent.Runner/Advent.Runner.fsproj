@@ -12,6 +12,7 @@
         <Compile Include="Commands\Day03.fs" />
         <Compile Include="Commands\Day04.fs" />
         <Compile Include="Commands\Day05.fs" />
+        <Compile Include="Commands\Day06.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

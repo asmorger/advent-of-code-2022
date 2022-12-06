@@ -4,6 +4,7 @@ open System
 open Advent.Domain
 open Advent.SectionAssignments
 open Advent.Cargo
+open Advent.Communications
 open Xunit
 open FsUnit.Xunit
 
@@ -162,3 +163,25 @@ move 1 from 1 to 2
     let result = executeProcedure9001 procedure
 
     result |> should equalSeq [| Crate 'M'; Crate 'C'; Crate 'D' |]
+
+module Day06 =
+
+  [<Theory>]
+  [<InlineData("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 7)>]
+  [<InlineData("bvwbjplbgvbhsrlpgdmjqwftvncz", 5)>]
+  [<InlineData("nppdvjthqldpwncqszvftbrmjlhg", 6)>]
+  [<InlineData("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 10)>]
+  [<InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 11)>]
+  let ``First set`` (input: string) (index: int) =
+    let result = determineFirstUniqueIndex 4 input
+    result |> should equal index
+
+  [<Theory>]
+  [<InlineData("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 19)>]
+  [<InlineData("bvwbjplbgvbhsrlpgdmjqwftvncz", 23)>]
+  [<InlineData("nppdvjthqldpwncqszvftbrmjlhg", 23)>]
+  [<InlineData("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 29)>]
+  [<InlineData("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 26)>]
+  let ``Second set`` (input: string) (index: int) =
+    let result = determineFirstUniqueIndex 14 input
+    result |> should equal index
