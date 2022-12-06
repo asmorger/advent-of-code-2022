@@ -1,13 +1,14 @@
 module Advent.Communications
 
-let isUnique windowSize (input: char array) =
+let isUnique windowSize input =
   let set = Set input
   set.Count = windowSize
 
-let determineFirstUniqueIndex (windowSize: int) (input: string) =
-  let windows = input.ToCharArray() |> Array.windowed windowSize
-
+let determineFirstUniqueIndex windowSize (input: string) =
   let uniqueIndex =
-    windows |> Array.map(isUnique windowSize)  |> Array.findIndex (fun x -> x = true)
+   input.ToCharArray()
+   |> Array.windowed windowSize
+   |> Array.map(isUnique windowSize)
+   |> Array.findIndex (fun x -> x = true)
     
   uniqueIndex + windowSize
